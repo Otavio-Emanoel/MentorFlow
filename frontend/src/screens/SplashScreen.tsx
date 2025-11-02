@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Animated, Easing, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors as theme } from '../theme';
 
@@ -13,6 +14,7 @@ const LAYERS = [
 ];
 
 export const SplashScreen: React.FC = () => {
+	const navigation = useNavigation<any>();
 	const fadeAnim = useRef(new Animated.Value(0)).current;
 	const scaleAnim = useRef(new Animated.Value(0.7)).current;
 	const amplitude = 0.5 * width; // corresponde a translateX(-25%)..25% com largura 200%
@@ -52,7 +54,9 @@ export const SplashScreen: React.FC = () => {
 				);
 			}),
 		]).start();
-	}, [fadeAnim, scaleAnim, slideAnims]);
+		const t = setTimeout(() => navigation.replace('Auth'), 2000);
+		return () => clearTimeout(t);
+	}, [fadeAnim, scaleAnim, slideAnims, navigation]);
 
 	return (
 		<View style={styles.root}>
